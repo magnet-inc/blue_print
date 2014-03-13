@@ -1,5 +1,15 @@
-require "blue_print/version"
+require 'thread_parent'
+require 'blue_print/version'
+require 'blue_print/environment'
+require 'blue_print/context'
+require 'blue_print/helper'
 
 module BluePrint
-  # Your code goes here...
+  def self.env
+    Thread.current[:blue_print] ||= Thread.parents[:blue_print]
+  end
+
+  def self.env=(env)
+    Thread.current[:blue_print] = env
+  end
 end
