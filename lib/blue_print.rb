@@ -14,4 +14,8 @@ module BluePrint
   def self.env=(env)
     Thread.current[:blue_print] = env
   end
+
+  def self.clear!
+    Thread.current[:blue_print] = nil
+  end
 end
