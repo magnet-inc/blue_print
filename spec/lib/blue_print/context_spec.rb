@@ -73,6 +73,14 @@ describe BluePrint::Context do
       it { should be_false }
     end
 
+    context 'only always active' do
+      before do
+        context.active_if(always_active)
+      end
+
+      it { should be_true }
+    end
+
     context 'with empty' do
       it { should be_false }
     end

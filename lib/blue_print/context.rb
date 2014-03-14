@@ -37,9 +37,10 @@ class BluePrint::Context
 
     action!
 
-    BluePrint.env[context_name] = !!active_ifs.reduce do |memo, active_if|
-      memo && active_if.active?
-    end
+    BluePrint.env[context_name] =
+      !!active_ifs.inject(active_ifs.first.try(:active?)) do |memo, active_if|
+        memo && active_if.active?
+      end
   end
 
   def self.deactive?
