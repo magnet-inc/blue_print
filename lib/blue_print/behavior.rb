@@ -17,7 +17,7 @@ module BluePrint::Behavior
   end
 
   def prepended(base)
-    base.include BluePrint::Helper
+    base.send(:include, BluePrint::Helper)
 
     if const_defined?('ClassMethods')
       singleton = class << base; self; end
