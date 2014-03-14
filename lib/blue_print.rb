@@ -4,6 +4,7 @@ require 'blue_print/version'
 require 'blue_print/environment'
 require 'blue_print/context'
 require 'blue_print/helper'
+require 'blue_print/integration'
 require 'blue_print/railtie' if defined?(Rails)
 
 module BluePrint
