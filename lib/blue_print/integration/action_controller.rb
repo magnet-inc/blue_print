@@ -8,17 +8,10 @@ module BluePrint::Integration::ActionController
   include BluePrint::Helper
 
   included do
-    if respond_to?(:before_action)
-      before_action(:build_blue_print_environment)
-    else
-      before_filter(:build_blue_print_environment)
-    end
+    action_or_filter = respond_to?(:before_action) ? :action : :filter
 
-    if respond_to?(:after_action)
-      after_action(:clear_blue_print_environment)
-    else
-      after_filter(:clear_blue_print_environment)
-    end
+    send("before_#{action_or_filter}", :build_blue_print_environment)
+    send("after_#{action_or_filter}", :clear_blue_print_environment)
   end
 
   private
