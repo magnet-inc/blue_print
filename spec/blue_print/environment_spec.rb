@@ -9,7 +9,7 @@ describe BluePrint::Environment do
       b = 2
       env.rspec = self
       env.with do |env|
-        env.rspec.expect(self.a).to env.rspec.eq(1)
+        env.rspec.expect(a).to env.rspec.eq(1)
         env.rspec.expect(b).to env.rspec.eq(2)
       end
     end

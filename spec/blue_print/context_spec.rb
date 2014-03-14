@@ -22,14 +22,15 @@ describe BluePrint::Context do
   describe '#active_if' do
     let(:named_active_if) { BluePrint::ActiveIf.new(:named) }
 
-     before do
-       context.active_if named_active_if.name, :null_active_if do
-       end
-     end
+    before do
+      context.active_if named_active_if.name, :null_active_if do
+        true
+      end
+    end
 
-     subject(:active_ifs) { context.active_ifs }
+    subject(:active_ifs) { context.active_ifs }
 
-     it { should have(2).active_ifs }
+    it { should have(2).active_ifs }
   end
 
   describe '#context_name' do
@@ -69,6 +70,10 @@ describe BluePrint::Context do
         context.active_if(always_active, always_deactive)
       end
 
+      it { should be_false }
+    end
+
+    context 'with empty' do
       it { should be_false }
     end
   end

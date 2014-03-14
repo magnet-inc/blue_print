@@ -14,7 +14,9 @@ unless coverage == 'no'
 
     formatters = []
     formatters.push(SimpleCov::Formatter::Console)
-    formatters.push(SimpleCov::Formatter::HTMLFormatter) if coverage.include?('html')
+    if coverage.include?('html')
+      formatters.push(SimpleCov::Formatter::HTMLFormatter)
+    end
 
     SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[*formatters]
   end

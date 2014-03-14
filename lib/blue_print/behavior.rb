@@ -4,8 +4,12 @@ require 'blue_print/helper'
 module BluePrint::Behavior
   include BluePrint::Helper
 
+  def self.auto_generate_class_methods?(base)
+    base.is_a?(Module) && !base.name.match(/ClassMethods$/)
+  end
+
   def self.extended(base)
-    if base.is_a?(Module) && !const_defined?('ClassMethods') && !base.name.match(/ClassMethods$/)
+    if auto_generate_class_methods?(base)
       base.module_eval <<-EOC
         module ClassMethods
           extend BluePrint::Behavior
@@ -24,10 +28,10 @@ module BluePrint::Behavior
   end
 
   def context_name
-    @context_name ||= name.to_s.underscore.tap { |name|
-      name.sub!(%r{/class_methods$}, '')
+    @context_name ||= name.to_s.underscore.tap do |name|
+      name.sub!(/\/class_methods$/, '')
       name.sub!(%r{/[^/]+?$}, '')
-    }.to_sym
+    end.to_sym
   end
 
   def context
@@ -36,11 +40,25 @@ module BluePrint::Behavior
 
   def behavior_name
     @behavior_name ||=
-      name.to_s.underscore.sub(%r{/class_methods$}, '').gsub('/', '__').to_sym
+      name.to_s.underscore.sub(/\/class_methods$/, '').gsub('/', '__').to_sym
   end
 
   def override_methods
     @override_methods ||= []
+  end
+
+  def define_safe_method(target, punctuation, method_name)
+    alias_method("#{target}_with_#{behavior_name}#{punctuation}", method_name)
+
+    module_eval <<-EOC
+      def #{method_name}(*args)
+        if #{context.name}.active?
+          #{target}_with_#{behavior_name}#{punctuation}(*args)
+        else
+          super
+        end
+      end
+    EOC
   end
 
   def method_added(method_name)
@@ -49,19 +67,10 @@ module BluePrint::Behavior
     override_methods.push(method_name)
 
     @ignore_added_hook = true
-    aliased_target, punctuation = method_name.to_s.sub(/([?!=])$/, ''), $1
+    aliased_target = method_name.to_s.sub(/([?!=])$/, '')
+    punctuation = Regexp.last_match[1]
 
-    alias_method "#{aliased_target}_with_#{behavior_name}#{punctuation}", method_name
-
-    module_eval <<-EOC
-      def #{method_name}(*args)
-        if #{context.name}.active?
-          #{aliased_target}_with_#{behavior_name}#{punctuation}(*args)
-        else
-          super
-        end
-      end
-    EOC
+    define_safe_method(aliased_target, punctuation, method_name)
     @ignore_added_hook = false
   end
 end

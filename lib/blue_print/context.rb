@@ -23,7 +23,7 @@ class BluePrint::Context
 
   def self.active_if(*names, &logic)
     active_ifs.concat(
-      names.map {|name| BluePrint::ActiveIf.resolve(name) }.reject(&:nil?)
+      names.map { |name| BluePrint::ActiveIf.resolve(name) }.reject(&:nil?)
     )
     active_ifs.push(BluePrint::ActiveIf.new(&logic)) if logic
   end
@@ -33,11 +33,11 @@ class BluePrint::Context
   end
 
   def self.active?
-    return BluePrint.env[context_name] if BluePrint.env.has_key?(context_name)
+    return BluePrint.env[context_name] if BluePrint.env.key?(context_name)
 
-    BluePrint.env[context_name] = !!active_ifs.map(&:active?).inject { |memo, active|
-      memo = memo && active
-    }
+    BluePrint.env[context_name] = !!active_ifs.reduce do |memo, active_if|
+      memo && active_if.active?
+    end
   end
 
   def self.deactive?

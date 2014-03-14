@@ -31,7 +31,7 @@ class BluePrint::ActiveIf
   end
 
   def active?
-    return BluePrint.env[cache_key] if BluePrint.env.has_key?(cache_key)
+    return BluePrint.env[cache_key] if BluePrint.env.key?(cache_key)
 
     BluePrint.env[cache_key] = BluePrint.env.within(&@logic)
   end
