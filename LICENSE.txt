@@ -1,4 +1,4 @@
-Copyright (c) 2014 Sho Kusano
+Copyright (c) 2014 Magnet Inc
 
 MIT License
 
