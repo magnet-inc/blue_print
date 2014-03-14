@@ -14,3 +14,9 @@ begin
   require 'blue_print/integration/grape'
 rescue LoadError
 end
+
+begin
+  require 'rspec'
+  require 'blue_print/integration/rspec'
+rescue LoadError
+end
