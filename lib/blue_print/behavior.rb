@@ -1,4 +1,3 @@
-require 'active_support/concern'
 require 'blue_print'
 require 'blue_print/helper'
 
