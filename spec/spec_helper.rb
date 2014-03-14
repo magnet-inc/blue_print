@@ -10,7 +10,7 @@ unless coverage == 'no'
   SimpleCov.start do
     require 'simplecov-console'
 
-    add_filter 'spec'
+    add_filter '/spec'
 
     formatters = []
     formatters.push(SimpleCov::Formatter::Console)
@@ -22,7 +22,12 @@ unless coverage == 'no'
   end
 end
 
-require 'blue_print'
+ENV['RAILS_ENV'] ||= 'test'
+
+require 'bundler/setup'
+require File.expand_path('../dummy/config/environment', __FILE__)
+require 'rspec/rails'
+require 'rspec/autorun'
 
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true
