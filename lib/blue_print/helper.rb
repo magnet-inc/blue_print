@@ -1,11 +1,13 @@
 require 'blue_print'
 
 module BluePrint::Helper
-  def within_cotext_of(name_or_context, &block)
+  def within_cotext_of(name_or_context, fallback = nil, &block)
     context = BluePrint::Context.resolve(name_or_context)
 
-    return unless context.active?
-
-    yield BluePrint.env
+    if context.active?
+      yield BluePrint.env
+    else
+      fallback.respond_to?(:call) && fallback.call
+    end
   end
 end

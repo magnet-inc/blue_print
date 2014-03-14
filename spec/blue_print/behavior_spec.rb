@@ -16,6 +16,10 @@ module TestContext
       def invalid?
         false
       end
+
+      def echo(word)
+        "#{word} with behavior"
+      end
     end
 
     def valid?
@@ -24,6 +28,10 @@ module TestContext
 
     def invalid?
       false
+    end
+
+    def echo(word)
+      "#{word} with behavior"
     end
   end
 end
@@ -37,8 +45,16 @@ describe BluePrint::Behavior do
         false
       end
 
+      def self.echo(word)
+        word
+      end
+
       def valid?
         false
+      end
+
+      def echo(word)
+        word
       end
     end
   end
@@ -65,11 +81,14 @@ describe BluePrint::Behavior do
 
       it { should_not be_invalid }
 
+      specify { expect(test_target.echo('hi')).to eq('hi with behavior') }
+
       context 'when deactive context' do
         before { TestContext.stub(active?: false) }
 
         it { should_not be_valid }
         specify { expect { target.invalid }.to raise_error }
+        specify { expect(test_target.echo('hi')).to eq('hi') }
       end
     end
   end

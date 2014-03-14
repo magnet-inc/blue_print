@@ -2,8 +2,6 @@ require 'blue_print'
 require 'blue_print/helper'
 
 module BluePrint::Behavior
-  include BluePrint::Helper
-
   def self.auto_generate_class_methods?(base)
     base.is_a?(Module) && !base.name.match(/ClassMethods$/)
   end
@@ -19,6 +17,8 @@ module BluePrint::Behavior
   end
 
   def prepended(base)
+    base.include BluePrint::Helper
+
     if const_defined?('ClassMethods')
       singleton = class << base
         self
@@ -52,10 +52,8 @@ module BluePrint::Behavior
 
     module_eval <<-EOC
       def #{method_name}(*args)
-        if #{context.name}.active?
+        within_cotext_of(#{context}, proc { super(*args) }) do
           #{target}_with_#{behavior_name}#{punctuation}(*args)
-        else
-          super
         end
       end
     EOC
@@ -68,7 +66,7 @@ module BluePrint::Behavior
 
     @ignore_added_hook = true
     aliased_target = method_name.to_s.sub(/([?!=])$/, '')
-    punctuation = Regexp.last_match[1]
+    punctuation = Regexp.last_match ? Regexp.last_match[1] : ''
 
     define_safe_method(aliased_target, punctuation, method_name)
     @ignore_added_hook = false
