@@ -9,6 +9,7 @@ unless coverage == 'no'
   require 'simplecov'
   SimpleCov.start do
     require 'simplecov-console'
+    require 'coveralls'
 
     add_filter '/spec'
 
@@ -17,6 +18,7 @@ unless coverage == 'no'
     if coverage.include?('html')
       formatters.push(SimpleCov::Formatter::HTMLFormatter)
     end
+    formatter.push(Coveralls::SimpleCov::Formatter)
 
     SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[*formatters]
   end
