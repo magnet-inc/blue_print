@@ -8,9 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = BluePrint::VERSION
   spec.authors       = ['Sho Kusano']
   spec.email         = ['rosylilly@aduca.org']
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = ''
+  spec.summary       = %q{The behavior switching framework for Rails}
+  spec.homepage      = 'http://magnet-inc.github.io/blue_print'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0")
