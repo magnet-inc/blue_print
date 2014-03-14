@@ -1,19 +1,18 @@
 language: ruby
-
 rvm:
-  - 2.0.0
-  - 2.1.0
-  - 2.1.1
-  - ruby-head
-
+- 2.0.0
+- 2.1.0
+- 2.1.1
+- ruby-head
 gemfile:
-  - gemfiles/rails-3.x.gemfile
-  - gemfiles/rails-4.x.gemfile
-  - gemfiles/rails-head.gemfile
-
+- gemfiles/rails-3.x.gemfile
+- gemfiles/rails-4.x.gemfile
+- gemfiles/rails-head.gemfile
 matrix:
   allow_failures:
-    - rvm: ruby-head
-    - gemfile: gemfiles/rails-head.gemfile
-
-script: 'bundle exec rspec'
+  - rvm: ruby-head
+  - gemfile: gemfiles/rails-head.gemfile
+script: bundle exec rspec
+notifications:
+  slack:
+    secure: SFTem6vmK6EHR3mH1RS8VwTcCh45Q9uLNbekMIQAEAdbha3ni5YEsv5RnOJrwlFe6B5y0ryLnf4ocmI2yRNZSF+MbMlyGs5ANqxdAZsk56domNmxeS1I7ezSLlM+a5kjD3RBUIOXY2+RZxjUTBQMXVJ4vJrz76IzWhR2U5Lkp/I=
