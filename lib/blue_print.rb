@@ -1,6 +1,6 @@
 require 'thread_parent'
-require 'blue_print/behavior'
 require 'blue_print/version'
+require 'blue_print/behavior'
 require 'blue_print/environment'
 require 'blue_print/context'
 require 'blue_print/helper'
