@@ -2,7 +2,8 @@ require 'hashie'
 require 'blue_print'
 
 class BluePrint::Environment < Hashie::Mash
-  def initialize(context)
+  def initialize(context, default = nil)
+    super({}, default)
     @context = context
   end
 
