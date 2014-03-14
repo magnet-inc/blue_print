@@ -19,7 +19,7 @@ describe BluePrint::Helper do
     context 'with deactive context' do
       let(:context) { double(active?: false) }
 
-      it 'runs block' do
+      it 'not runs block' do
         helper.should_not_receive(:message)
         helper.within_cotext_of(context) do
           helper.message
