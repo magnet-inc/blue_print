@@ -25,6 +25,14 @@ describe BluePrint::Helper do
           helper.message
         end
       end
+
+      it 'runs fallback' do
+        helper.should_receive(:fallback)
+        helper.should_not_receive(:message)
+        helper.within_cotext_of(context, proc { helper.fallback }) do
+          helper.message
+        end
+      end
     end
   end
 end
