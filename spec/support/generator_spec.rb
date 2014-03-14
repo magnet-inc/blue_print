@@ -1,0 +1,1 @@
+require 'generator_spec'
