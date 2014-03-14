@@ -23,5 +23,12 @@ module BluePrint::Generators
     def roles
       models_with_roles.map(&:last).flatten.uniq
     end
+
+    def each_with_role(&block)
+      roles.each do |role|
+        @role = role
+        yield role
+      end
+    end
   end
 end
