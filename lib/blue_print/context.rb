@@ -61,7 +61,7 @@ class BluePrint::Context
 
     casting.each_pair do |klass, roles|
       roles.each do |role|
-        klass.prepend(role)
+        klass.send(:prepend, role)
       end
     end
 

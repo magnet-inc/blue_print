@@ -21,7 +21,7 @@ module BluePrint::Behavior
 
     if const_defined?('ClassMethods')
       singleton = class << base; self; end
-      singleton.prepend(const_get('ClassMethods'))
+      singleton.send(:prepend, const_get('ClassMethods'))
     end
   end
 
