@@ -9,6 +9,9 @@ gemfile:
 - gemfiles/rails-4.x.gemfile
 - gemfiles/rails-head.gemfile
 matrix:
+  exclude:
+  - rvm: ruby-head
+    gemfile: gemfiles/rails-3.x.gemfile
   allow_failures:
   - rvm: ruby-head
   - gemfile: gemfiles/rails-head.gemfile
