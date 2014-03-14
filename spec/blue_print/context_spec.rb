@@ -87,4 +87,33 @@ describe BluePrint::Context do
       expect(deactive).to be_true
     end
   end
+
+  describe '#cast' do
+    let(:klass) { Class.new }
+    let(:role) { Module.new }
+
+    before do
+      context.cast(klass, as: role)
+      context.cast(klass, as: role)
+    end
+
+    it 'be set casting' do
+      expect(context.casting[klass]).to have(1).role
+      expect(context.casting[klass]).to include(role)
+    end
+  end
+
+  describe '#action!' do
+    let(:klass) { Class.new }
+    let(:role) { Module.new }
+
+    before do
+      context.cast(klass, as: role)
+      context.action!
+    end
+
+    it 'be act role' do
+      expect(klass.ancestors.first).to eq(role)
+    end
+  end
 end

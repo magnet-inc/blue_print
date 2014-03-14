@@ -35,6 +35,8 @@ class BluePrint::Context
   def self.active?
     return BluePrint.env[context_name] if BluePrint.env.key?(context_name)
 
+    action!
+
     BluePrint.env[context_name] = !!active_ifs.reduce do |memo, active_if|
       memo && active_if.active?
     end
@@ -42,5 +44,27 @@ class BluePrint::Context
 
   def self.deactive?
     !active?
+  end
+
+  def self.casting
+    @casting ||= Hash.new { |casting, klass| casting[klass] = [] }
+  end
+
+  def self.cast(actor, as: [])
+    as = [as] unless as.kind_of?(Array)
+    as.map! { |role| role.is_a?(Module) ? role : role.to_s.safe_constantize }
+    casting[actor] = casting[actor] | as
+  end
+
+  def self.action!
+    return if @acted
+
+    casting.each_pair do |klass, roles|
+      roles.each do |role|
+        klass.prepend(role)
+      end
+    end
+
+    @acted = true
   end
 end
