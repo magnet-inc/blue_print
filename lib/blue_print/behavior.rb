@@ -50,7 +50,7 @@ module BluePrint::Behavior
 
     module_eval <<-EOC
       def #{method_name}(*args)
-        within_cotext_of(#{context}, proc { super(*args) }) do
+        within_context_of(#{context}, proc { super(*args) }) do
           #{target}_with_#{behavior_name}#{punctuation}(*args)
         end
       end
