@@ -62,7 +62,7 @@ describe Rails::Generators::BluePrintGenerator do
       expect(destination_root).to(have_structure do
         directory 'app/blue_prints' do
           file 'staff_context.rb' do
-            contains 'act ::User, as: [Staff, Customer]'
+            contains 'cast ::User, as: [Staff, Customer]'
           end
 
           directory 'staff_context' do

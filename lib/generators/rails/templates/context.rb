@@ -9,7 +9,7 @@ class <%= class_name %>Context < <%= parent_class_name.classify %>
   <%- end -%>
 
   <%- models.each_pair do |model, roles| -%>
-  act ::<%= model %>, as: [<%= roles.join(', ') %>]
+  cast ::<%= model %>, as: [<%= roles.join(', ') %>]
   <%- end -%>
 end
 <% end -%>
