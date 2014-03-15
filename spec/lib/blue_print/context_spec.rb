@@ -1,13 +1,20 @@
 require 'spec_helper'
 
+class SpecContext < BluePrint::Context
+end
+
 describe BluePrint::Context do
-  subject(:context) { Class.new(BluePrint::Context) }
+  subject(:context) { SpecContext }
+
+  after do
+    context.active_ifs.clear
+  end
 
   describe '#resolve' do
     subject { BluePrint::Context.resolve(name) }
 
-    context 'with empty name' do
-      let(:name) { '' }
+    context 'with :spec' do
+      let(:name) { :spec }
 
       it { should eq(context) }
     end
@@ -36,7 +43,7 @@ describe BluePrint::Context do
   describe '#context_name' do
     subject(:context_name) { context.context_name }
 
-    it { should eq(:'') }
+    it { should eq(:spec_context) }
   end
 
   describe '#active?' do
@@ -117,6 +124,7 @@ describe BluePrint::Context do
 
     before do
       context.cast(klass, as: role)
+      context.instance_variable_set(:@acted, false)
       context.action!
     end
 

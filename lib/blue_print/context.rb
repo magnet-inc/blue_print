@@ -3,17 +3,11 @@ require 'blue_print'
 require 'blue_print/active_if'
 
 class BluePrint::Context
-  NAMED_CONTEXT_MAP = {}
-
-  def self.inherited(klass)
-    NAMED_CONTEXT_MAP[klass.context_name] = klass
-  end
-
   def self.resolve(name)
     if name.respond_to?(:active?)
       return name
     else
-      NAMED_CONTEXT_MAP[name.to_s.underscore.to_sym]
+      name.to_s.classify.sub(/(Context)?$/, 'Context').safe_constantize
     end
   end
 
