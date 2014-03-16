@@ -6,6 +6,10 @@ end
 describe BluePrint::Context do
   subject(:context) { SpecContext }
 
+  before do
+    BluePrint.env = BluePrint::Environment.new(self)
+  end
+
   after do
     context.active_ifs.clear
   end
@@ -52,10 +56,6 @@ describe BluePrint::Context do
 
     subject { context.active? }
 
-    before do
-      BluePrint.env = BluePrint::Environment.new(self)
-    end
-
     context 'with always actives' do
       before do
         context.active_if(always_active, always_active)
@@ -101,6 +101,24 @@ describe BluePrint::Context do
 
       expect(deactive).to be_true
     end
+  end
+
+  describe '#activate!' do
+    before do
+      context.active_if { false }
+      context.activate!
+    end
+
+    it { should be_active }
+  end
+
+  describe '#deactivate!' do
+    before do
+      context.active_if { true }
+      context.deactivate!
+    end
+
+    it { should be_deactive }
   end
 
   describe '#cast' do

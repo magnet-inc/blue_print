@@ -41,6 +41,14 @@ class BluePrint::Context
     !active?
   end
 
+  def self.activate!
+    BluePrint.env[context_name] = true
+  end
+
+  def self.deactivate!
+    BluePrint.env[context_name] = false
+  end
+
   def self.casting
     @casting ||= Hash.new { |casting, klass| casting[klass] = [] }
   end
