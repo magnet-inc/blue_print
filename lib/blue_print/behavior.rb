@@ -49,6 +49,7 @@ module BluePrint::Behavior
 
   def define_safe_method(target, punctuation, method_name)
     alias_method("#{target}_with_#{behavior_name}#{punctuation}", method_name)
+    remove_method(method_name)
 
     module_eval <<-EOC
       def #{method_name}(*args)
