@@ -5,7 +5,7 @@
 [![Coverage Status](https://coveralls.io/repos/magnet-inc/blue_print/badge.png)](https://coveralls.io/r/magnet-inc/blue_print)
 [![Code Climate](https://codeclimate.com/github/magnet-inc/blue_print.png)](https://codeclimate.com/github/magnet-inc/blue_print)
 
-The behavior switching framework for Rails
+The behavior switching framework.
 
 ## Requirements
 

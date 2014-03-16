@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = BluePrint::VERSION
   spec.authors       = ['Sho Kusano']
   spec.email         = ['rosylilly@aduca.org']
-  spec.summary       = %q{The behavior switching framework for Rails}
+  spec.summary       = %q{The behavior switching framework}
   spec.homepage      = 'http://magnet-inc.github.io/blue_print'
   spec.license       = 'MIT'
 
