@@ -13,11 +13,7 @@ task :benchmark do
     },
     benchmark_iteration: BENCHMARK_ITERATION,
     method_call_iteration: NUM_ITERATION,
-    benchmarks: {
-      pure: PURE_RESULT,
-      blue_print: BLUE_PRINT_RESULT,
-      extend: EXTEND_RESULT
-    }
+    benchmarks: SCORES
   }
 
   result[:benchmarks].each_pair do |label, scores|

@@ -5,6 +5,37 @@ require 'benchmark'
 LABEL_WIDTH = 10
 BENCHMARK_ITERATION = 100
 NUM_ITERATION = 100000
+SCORES = Hash.new { |h, k| h[k] = [] }
+
+def benchmark(label, before_active, active, before_deactive, deactive)
+  progress = ProgressBar.create(
+    title: label.to_s.ljust(LABEL_WIDTH),
+    total: BENCHMARK_ITERATION
+  )
+  GC.start
+  BENCHMARK_ITERATION.times do |n|
+    n += 1
+
+    SCORES[label].push(
+      Benchmark.measure("#{n}#{n.ordinal}") do
+        before_active.call
+
+        NUM_ITERATION.times do
+          active.call
+        end
+
+        before_deactive.call
+
+        NUM_ITERATION.times do
+          deactive.call
+        end
+      end
+    )
+
+    progress.increment
+  end
+  progress.finish
+end
 
 class Model
   def self.active?
@@ -36,33 +67,10 @@ end
 
 model = Model.new
 
-PURE_RESULT = []
-progress = ProgressBar.create(
-  title: model.name.to_s.ljust(LABEL_WIDTH),
-  total: BENCHMARK_ITERATION
+benchmark(
+  :pure,
+  -> { Model.activate! },
+  -> { Model.new.name; NoEffect.new.name },
+  -> { Model.deactivate! },
+  -> { Model.new.name; NoEffect.new.name }
 )
-GC.start
-BENCHMARK_ITERATION.times do |n|
-  n += 1
-
-  PURE_RESULT.push(
-    Benchmark.measure("#{n}#{n.ordinal}") do
-      Model.activate!
-
-      NUM_ITERATION.times do
-        Model.new.name
-        NoEffect.new.name
-      end
-
-      Model.deactivate!
-
-      NUM_ITERATION.times do
-        Model.new.name
-        NoEffect.new.name
-      end
-    end
-  )
-
-  progress.increment
-end
-progress.finish
