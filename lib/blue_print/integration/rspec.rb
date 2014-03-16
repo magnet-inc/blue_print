@@ -5,6 +5,10 @@ module BluePrint::Integration::RSpec
   extend ActiveSupport::Concern
 
   included do
+    before(:each) do
+      BluePrint.env = BluePrint::Environment.new(self)
+    end
+
     after(:each) do
       BluePrint.clear!
     end

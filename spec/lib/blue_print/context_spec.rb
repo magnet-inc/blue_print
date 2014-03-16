@@ -6,10 +6,6 @@ end
 describe BluePrint::Context do
   subject(:context) { SpecContext }
 
-  before do
-    BluePrint.env = BluePrint::Environment.new(self)
-  end
-
   after do
     context.active_ifs.clear
   end
