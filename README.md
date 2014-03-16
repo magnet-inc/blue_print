@@ -21,7 +21,7 @@ The behavior switching framework. inspired by [DCI](http://en.wikipedia.org/wiki
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'blue_print', '~> 1.2.0'
+gem 'blue_print', '~> 1.3.0'
 ```
 
 ## Usage
