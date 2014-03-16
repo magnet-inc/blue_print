@@ -27,12 +27,11 @@ class BluePrint::Context
   end
 
   def self.active?
-    return BluePrint.env[context_name] if BluePrint.env.key?(context_name)
-
-    BluePrint.env[context_name] =
+    BluePrint.env.fetch(context_name) do
       !!active_ifs.inject(active_ifs.first.try(:active?)) do |memo, active_if|
         memo && active_if.active?
       end
+    end
   end
 
   def self.deactive?
