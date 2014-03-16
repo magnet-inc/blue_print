@@ -8,15 +8,17 @@ require 'blue_print/integration'
 require 'blue_print/railtie' if defined?(Rails)
 
 module BluePrint
+  ENV_KEY = :blue_print
+
   def self.env
-    Thread.current[:blue_print] ||= Thread.parents[:blue_print]
+    Thread.current[ENV_KEY] ||= Thread.parents[ENV_KEY]
   end
 
   def self.env=(env)
-    Thread.current[:blue_print] = env
+    Thread.current[ENV_KEY] = env
   end
 
   def self.clear!
-    Thread.current[:blue_print] = nil
+    Thread.current[ENV_KEY] = nil
   end
 end
