@@ -1,3 +1,5 @@
+require 'active_support/core_ext/object/try'
+require 'active_support/core_ext/string/inflections'
 require 'blue_print'
 require 'blue_print/helper'
 
@@ -68,7 +70,7 @@ module BluePrint::Behavior
 
     define_safe_method(aliased_target, punctuation, method_name)
 
-    context.reaction!
+    context.try(:reaction!)
     @ignore_added_hook = false
   end
 end
