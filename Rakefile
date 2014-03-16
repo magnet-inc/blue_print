@@ -27,3 +27,21 @@ task :benchmark do
     puts "  min: #{totals.min.round(3)} max: #{totals.max.round(3)} avg: #{avg.round(3)}"
   end
 end
+
+namespace :profile do
+  PROFILES = Dir['profile/*.rb'].map {|f| File.basename(f, '.rb') }
+
+  PROFILES.each do |profile|
+    desc "take #{profile} profile"
+    task profile do
+      require File.expand_path("../profile/#{profile}", __FILE__)
+    end
+  end
+
+  desc 'take all profiles'
+  task :all do
+    PROFILES.each do |profile|
+      Rake::Task["profile:#{profile}"].invoke
+    end
+  end
+end
