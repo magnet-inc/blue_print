@@ -10,7 +10,11 @@ The behavior switching framework for Rails
 ## Requirements
 
 - __Ruby__ >= _2.0.0_
-- __Rails__ >= _3.1.0_
+  - Tested ruby version:
+    - 2.0.0
+    - 2.1.0
+    - 2.1.1
+    - head
 
 ## Installation
 
