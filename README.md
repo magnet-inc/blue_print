@@ -35,6 +35,15 @@ $ rails generate blue_print staff user:staff_user
      create    spec/blue_prints/staff_context/staff_user_spec.rb
 ```
 
+### Integration
+
+BluePrint provides some integrations. Now supported libraries:
+
+- [Ruby on Rails](http://rubyonrails.org/) >= 3.1
+- [Grape](http://intridea.github.io/grape/)
+- [Draper](https://github.com/drapergem/draper)
+- [RSpec](https://github.com/rspec)
+
 ### Contexts
 
 Contexts inherit from `BluePrint::Context`, live in your `app/blue_prints` directory.
