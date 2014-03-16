@@ -27,12 +27,12 @@ gem 'blue_print', '~> 1.2.0'
 BluePrint provides a generator to create templates of a context and behaviros.
 
 ```bash
-$ rails generate blue_print staff user:staff
+$ rails generate blue_print staff user:staff_user
      create  app/blue_prints/staff_context.rb
-     create  app/blue_prints/staff_context/staff.rb
+     create  app/blue_prints/staff_context/staff_user.rb
      invoke  rspec
      create    spec/blue_prints/staff_context_spec.rb
-     create    spec/blue_prints/staff_context/staff_spec.rb
+     create    spec/blue_prints/staff_context/staff_user_spec.rb
 ```
 
 ### Contexts
@@ -79,6 +79,72 @@ StaffContext.casting
 #   {
 #     User => [ StaffUser ]
 #   }
+```
+
+### Behaviors
+
+Behaviors extended by `BluePrint::Behavior`, live in your `app/blue_prints/{context}` directory.
+
+```ruby
+# app/blue_prints/staff_context/staff_user.rb
+module StaffContext::StaffUser
+  extend BluePrint::Behavior
+end
+```
+
+#### Methods
+
+Behaviors can have some methods.
+
+```ruby
+# app/blue_prints/staff_context/staff_user.rb
+module StaffContext::StaffUser
+  extend BluePrint::Behavior
+
+  def user_name
+    "staff"
+  end
+end
+
+# app/models/user.rb
+class User < ActiveRecord::Base
+  def user_name
+    "#{name} san"
+  end
+end
+
+user = User.new(name: "Magnet")
+user.user_name # => "Magnet san"
+within_context_of(StaffContext) do
+  user.user_name # => "staff"
+end
+```
+
+#### Class Methods
+
+Behaviors can have some class methods.
+
+```ruby
+# app/blue_prints/staff_context/staff_user.rb
+module StaffContext::StaffUser
+  extend BluePrint::Behavior
+
+  module ClassMethods
+    def find(id)
+      where(id: id, staff: true).first!
+    end
+  end
+end
+
+# app/models/user.rb
+class User < ActiveRecord::Base
+end
+
+user = User.create(staff: false)
+User.find(user.id) == user # => true
+within_context_of(StaffContext) do
+  User.find(user.id) # => raise ActiveRecord::NotFound
+end
 ```
 
 ## Contributing
