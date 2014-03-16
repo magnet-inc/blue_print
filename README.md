@@ -16,7 +16,7 @@ The behavior switching framework for Rails
 
 Add this line to your application's Gemfile:
 
-    gem 'blue_print', '~> 0.0.1'
+    gem 'blue_print', '~> 1.2.0'
 
 ## Usage
 
