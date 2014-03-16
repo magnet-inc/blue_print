@@ -147,6 +147,12 @@ within_context_of(StaffContext) do
 end
 ```
 
+### Helper
+
+`BluePrint::Helper` provides `#within_context_of` method.
+
+This module includes automatically to some classes. see [lib/blue_print/integration](https://github.com/magnet-inc/blue_print/tree/master/lib/blue_print/integration).
+
 ## Contributing
 
 1. Fork it ( http://github.com/magnet-inc/blue_print/fork )
