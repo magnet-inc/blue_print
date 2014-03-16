@@ -34,6 +34,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'ruby-prof'
 
   spec.add_dependency 'activesupport'
-  spec.add_dependency 'hashie'
   spec.add_dependency 'thread-parent'
 end

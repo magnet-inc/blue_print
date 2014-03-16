@@ -1,9 +1,8 @@
-require 'hashie'
 require 'blue_print'
 
-class BluePrint::Environment < Hashie::Mash
+class BluePrint::Environment < Hash
   def initialize(context, default = nil)
-    super({}, default)
+    super(default)
     @context = context
   end
 
