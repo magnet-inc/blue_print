@@ -26,6 +26,15 @@ gem 'blue_print', '~> 1.2.0'
 
 ## Usage
 
+### Integration
+
+BluePrint provides some integrations. Now supported libraries:
+
+- [Ruby on Rails](http://rubyonrails.org/) >= 3.1
+- [Grape](http://intridea.github.io/grape/)
+- [Draper](https://github.com/drapergem/draper)
+- [RSpec](https://github.com/rspec)
+
 ### Rails Generators
 
 BluePrint provides a generator to create templates of a context and behaviros.
@@ -38,15 +47,6 @@ $ rails generate blue_print staff user:staff_user
      create    spec/blue_prints/staff_context_spec.rb
      create    spec/blue_prints/staff_context/staff_user_spec.rb
 ```
-
-### Integration
-
-BluePrint provides some integrations. Now supported libraries:
-
-- [Ruby on Rails](http://rubyonrails.org/) >= 3.1
-- [Grape](http://intridea.github.io/grape/)
-- [Draper](https://github.com/drapergem/draper)
-- [RSpec](https://github.com/rspec)
 
 ### Contexts
 
