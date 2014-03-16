@@ -16,11 +16,70 @@ The behavior switching framework for Rails
 
 Add this line to your application's Gemfile:
 
-    gem 'blue_print', '~> 1.2.0'
+```ruby
+gem 'blue_print', '~> 1.2.0'
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+### Rails Generators
+
+BluePrint provides a generator to create templates of a context and behaviros.
+
+```bash
+$ rails generate blue_print staff user:staff
+     create  app/blue_prints/staff_context.rb
+     create  app/blue_prints/staff_context/staff.rb
+     invoke  rspec
+     create    spec/blue_prints/staff_context_spec.rb
+     create    spec/blue_prints/staff_context/staff_spec.rb
+```
+
+### Contexts
+
+Contexts inherit from `BluePrint::Context`, live in your `app/blue_prints` directory.
+
+#### active_if
+
+This block is used to decide if this context active or not. `env` is the `BluePrint.env`. `self` is passed via `BluePrint::Environment#context`. By default, this is set as `active_if { false }`.
+
+```ruby
+class StaffContext < BluePrint::Context
+  active_if do |env|
+    current_user.try(:staff?)
+  end
+end
+```
+
+And you can define named active if:
+
+```ruby
+# lib/active_ifs/staff.rb
+BluePrint::ActiveIf.new(:staff) do |env|
+  current_user.try(:staff?)
+end
+
+# app/blue_prints/staff_context.rb
+class StaffContext < BluePrint::Context
+  active_if :staff
+end
+```
+
+#### Casting
+
+Contexts has casting. This is used to decide classes cast as behaviors if this context active.
+
+```ruby
+class StaffContext < BluePrint::Context
+  cast ::User, as: [StaffUser]
+end
+
+StaffContext.casting
+# =>
+#   {
+#     User => [ StaffUser ]
+#   }
+```
 
 ## Contributing
 
