@@ -16,8 +16,8 @@ model = Model.new.extend(ExtendedUser)
 
 benchmark(
   :extended,
-  -> {},
+  nil,
   -> { Model.new.extend(ExtendedUser).name; NoEffect.new.name },
-  -> {},
-  -> { Model.new.name; NoEffect.new.name }
+  nil,
+  DEFAULT_CALL,
 )

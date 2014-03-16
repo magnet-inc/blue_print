@@ -28,7 +28,7 @@ model = Model.new
 benchmark(
   :blue_print,
   -> { BenchmarkContext.activate! },
-  -> { Model.new.name; NoEffect.new.name },
+  DEFAULT_CALL,
   -> { BenchmarkContext.deactivate! },
-  -> { Model.new.name; NoEffect.new.name }
+  DEFAULT_CALL
 )

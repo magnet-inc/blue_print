@@ -18,13 +18,13 @@ def benchmark(label, before_active, active, before_deactive, deactive)
 
     SCORES[label].push(
       Benchmark.measure("#{n}#{n.ordinal}") do
-        before_active.call
+        before_active && before_active.call
 
         NUM_ITERATION.times do
           active.call
         end
 
-        before_deactive.call
+        before_deactive && before_deactive.call
 
         NUM_ITERATION.times do
           deactive.call
@@ -67,10 +67,12 @@ end
 
 model = Model.new
 
+DEFAULT_CALL = -> { Model.new.name; NoEffect.new.name }
+
 benchmark(
   :pure,
   -> { Model.activate! },
-  -> { Model.new.name; NoEffect.new.name },
+  DEFAULT_CALL,
   -> { Model.deactivate! },
-  -> { Model.new.name; NoEffect.new.name }
+  DEFAULT_CALL
 )
