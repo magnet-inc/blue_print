@@ -28,9 +28,12 @@
     <div id="content-wrapper">
       <div class="inner clearfix">
         <section id="main-content">
-          <p><a href="https://travis-ci.org/magnet-inc/blue_print"><img src="https://travis-ci.org/magnet-inc/blue_print.png?branch=master" alt="Build Status"></a> <a href="https://coveralls.io/r/magnet-inc/blue_print"><img src="https://coveralls.io/repos/magnet-inc/blue_print/badge.png" alt="Coverage Status"></a> <a href="https://codeclimate.com/github/magnet-inc/blue_print"><img src="https://codeclimate.com/github/magnet-inc/blue_print.png" alt="Code Climate"></a></p>
+          <p><a href="http://badge.fury.io/rb/blue_print"><img src="https://badge.fury.io/rb/blue_print.png" alt="Gem Version"></a>
+<a href="https://travis-ci.org/magnet-inc/blue_print"><img src="https://travis-ci.org/magnet-inc/blue_print.png?branch=master" alt="Build Status"></a>
+<a href="https://coveralls.io/r/magnet-inc/blue_print"><img src="https://coveralls.io/repos/magnet-inc/blue_print/badge.png" alt="Coverage Status"></a>
+<a href="https://codeclimate.com/github/magnet-inc/blue_print"><img src="https://codeclimate.com/github/magnet-inc/blue_print.png" alt="Code Climate"></a></p>
 
-<p>The behavior switching framework for Rails</p>
+<p>The behavior switching framework. inspired by <a href="http://en.wikipedia.org/wiki/Data,_context_and_interaction">DCI</a>.</p>
 
 <h2>
 <a name="requirements" class="anchor" href="#requirements"><span class="octicon octicon-link"></span></a>Requirements</h2>
@@ -38,22 +41,172 @@
 <ul>
 <li>
 <strong>Ruby</strong> &gt;= <em>2.0.0</em>
+
+<ul>
+<li>Tested ruby version:
+
+<ul>
+<li>2.0.0</li>
+<li>2.1.0</li>
+<li>2.1.1</li>
+<li>head</li>
+</ul>
 </li>
-<li>
-<strong>Rails</strong> &gt;= <em>3.1.0</em>
+</ul>
 </li>
 </ul><h2>
 <a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
 
 <p>Add this line to your application's Gemfile:</p>
 
-<pre><code>gem 'blue_print', '~&gt; 0.0.1'
-</code></pre>
+<div class="highlight highlight-ruby"><pre><span class="n">gem</span> <span class="s1">'blue_print'</span><span class="p">,</span> <span class="s1">'~&gt; 1.2.0'</span>
+</pre></div>
 
 <h2>
 <a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
 
-<p>TODO: Write usage instructions here</p>
+<h3>
+<a name="integration" class="anchor" href="#integration"><span class="octicon octicon-link"></span></a>Integration</h3>
+
+<p>BluePrint provides some integrations. Now supported libraries:</p>
+
+<ul>
+<li>
+<a href="http://rubyonrails.org/">Ruby on Rails</a> &gt;= 3.1</li>
+<li><a href="http://intridea.github.io/grape/">Grape</a></li>
+<li><a href="https://github.com/drapergem/draper">Draper</a></li>
+<li><a href="https://github.com/rspec">RSpec</a></li>
+</ul><h3>
+<a name="rails-generators" class="anchor" href="#rails-generators"><span class="octicon octicon-link"></span></a>Rails Generators</h3>
+
+<p>BluePrint provides a generator to create templates of a context and behaviros.</p>
+
+<div class="highlight highlight-bash"><pre><span class="nv">$ </span>rails generate blue_print staff user:staff_user
+     create  app/blue_prints/staff_context.rb
+     create  app/blue_prints/staff_context/staff_user.rb
+     invoke  rspec
+     create    spec/blue_prints/staff_context_spec.rb
+     create    spec/blue_prints/staff_context/staff_user_spec.rb
+</pre></div>
+
+<h3>
+<a name="contexts" class="anchor" href="#contexts"><span class="octicon octicon-link"></span></a>Contexts</h3>
+
+<p>Contexts inherit from <code>BluePrint::Context</code>, live in your <code>app/blue_prints</code> directory.</p>
+
+<h4>
+<a name="active_if" class="anchor" href="#active_if"><span class="octicon octicon-link"></span></a>active_if</h4>
+
+<p>This block is used to decide if this context active or not. <code>env</code> is the <code>BluePrint.env</code>. <code>self</code> is passed via <code>BluePrint::Environment#context</code>. By default, this is set as <code>active_if { false }</code>.</p>
+
+<div class="highlight highlight-ruby"><pre><span class="k">class</span> <span class="nc">StaffContext</span> <span class="o">&lt;</span> <span class="no">BluePrint</span><span class="o">::</span><span class="no">Context</span>
+  <span class="n">active_if</span> <span class="k">do</span> <span class="o">|</span><span class="n">env</span><span class="o">|</span>
+    <span class="n">current_user</span><span class="o">.</span><span class="n">try</span><span class="p">(</span><span class="ss">:staff?</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+
+<p>And you can define named active if:</p>
+
+<div class="highlight highlight-ruby"><pre><span class="c1"># lib/active_ifs/staff.rb</span>
+<span class="no">BluePrint</span><span class="o">::</span><span class="no">ActiveIf</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:staff</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">env</span><span class="o">|</span>
+  <span class="n">current_user</span><span class="o">.</span><span class="n">try</span><span class="p">(</span><span class="ss">:staff?</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="c1"># app/blue_prints/staff_context.rb</span>
+<span class="k">class</span> <span class="nc">StaffContext</span> <span class="o">&lt;</span> <span class="no">BluePrint</span><span class="o">::</span><span class="no">Context</span>
+  <span class="n">active_if</span> <span class="ss">:staff</span>
+<span class="k">end</span>
+</pre></div>
+
+<h4>
+<a name="casting" class="anchor" href="#casting"><span class="octicon octicon-link"></span></a>Casting</h4>
+
+<p>Contexts has casting. This is used to decide classes cast as behaviors if this context active.</p>
+
+<div class="highlight highlight-ruby"><pre><span class="k">class</span> <span class="nc">StaffContext</span> <span class="o">&lt;</span> <span class="no">BluePrint</span><span class="o">::</span><span class="no">Context</span>
+  <span class="n">cast</span> <span class="o">::</span><span class="no">User</span><span class="p">,</span> <span class="ss">as</span><span class="p">:</span> <span class="o">[</span><span class="no">StaffUser</span><span class="o">]</span>
+<span class="k">end</span>
+
+<span class="no">StaffContext</span><span class="o">.</span><span class="n">casting</span>
+<span class="c1"># =&gt;</span>
+<span class="c1">#   {</span>
+<span class="c1">#     User =&gt; [ StaffUser ]</span>
+<span class="c1">#   }</span>
+</pre></div>
+
+<h3>
+<a name="behaviors" class="anchor" href="#behaviors"><span class="octicon octicon-link"></span></a>Behaviors</h3>
+
+<p>Behaviors extended by <code>BluePrint::Behavior</code>, live in your <code>app/blue_prints/{context}</code> directory.</p>
+
+<div class="highlight highlight-ruby"><pre><span class="c1"># app/blue_prints/staff_context/staff_user.rb</span>
+<span class="k">module</span> <span class="nn">StaffContext::StaffUser</span>
+  <span class="kp">extend</span> <span class="no">BluePrint</span><span class="o">::</span><span class="no">Behavior</span>
+<span class="k">end</span>
+</pre></div>
+
+<h4>
+<a name="methods" class="anchor" href="#methods"><span class="octicon octicon-link"></span></a>Methods</h4>
+
+<p>Behaviors can have some methods.</p>
+
+<div class="highlight highlight-ruby"><pre><span class="c1"># app/blue_prints/staff_context/staff_user.rb</span>
+<span class="k">module</span> <span class="nn">StaffContext::StaffUser</span>
+  <span class="kp">extend</span> <span class="no">BluePrint</span><span class="o">::</span><span class="no">Behavior</span>
+
+  <span class="k">def</span> <span class="nf">user_name</span>
+    <span class="s2">"staff"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c1"># app/models/user.rb</span>
+<span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="k">def</span> <span class="nf">user_name</span>
+    <span class="s2">"</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2"> san"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span> <span class="s2">"Magnet"</span><span class="p">)</span>
+<span class="n">user</span><span class="o">.</span><span class="n">user_name</span> <span class="c1"># =&gt; "Magnet san"</span>
+<span class="n">within_context_of</span><span class="p">(</span><span class="no">StaffContext</span><span class="p">)</span> <span class="k">do</span>
+  <span class="n">user</span><span class="o">.</span><span class="n">user_name</span> <span class="c1"># =&gt; "staff"</span>
+<span class="k">end</span>
+</pre></div>
+
+<h4>
+<a name="class-methods" class="anchor" href="#class-methods"><span class="octicon octicon-link"></span></a>Class Methods</h4>
+
+<p>Behaviors can have some class methods.</p>
+
+<div class="highlight highlight-ruby"><pre><span class="c1"># app/blue_prints/staff_context/staff_user.rb</span>
+<span class="k">module</span> <span class="nn">StaffContext::StaffUser</span>
+  <span class="kp">extend</span> <span class="no">BluePrint</span><span class="o">::</span><span class="no">Behavior</span>
+
+  <span class="k">module</span> <span class="nn">ClassMethods</span>
+    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+      <span class="n">where</span><span class="p">(</span><span class="nb">id</span><span class="p">:</span> <span class="nb">id</span><span class="p">,</span> <span class="ss">staff</span><span class="p">:</span> <span class="kp">true</span><span class="p">)</span><span class="o">.</span><span class="n">first!</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c1"># app/models/user.rb</span>
+<span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+<span class="k">end</span>
+
+<span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">staff</span><span class="p">:</span> <span class="kp">false</span><span class="p">)</span>
+<span class="no">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="o">==</span> <span class="n">user</span> <span class="c1"># =&gt; true</span>
+<span class="n">within_context_of</span><span class="p">(</span><span class="no">StaffContext</span><span class="p">)</span> <span class="k">do</span>
+  <span class="no">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="c1"># =&gt; raise ActiveRecord::NotFound</span>
+<span class="k">end</span>
+</pre></div>
+
+<h3>
+<a name="helper" class="anchor" href="#helper"><span class="octicon octicon-link"></span></a>Helper</h3>
+
+<p><code>BluePrint::Helper</code> provides <code>#within_context_of</code> method.</p>
+
+<p>This module includes automatically to some classes. see <a href="https://github.com/magnet-inc/blue_print/tree/master/lib/blue_print/integration">lib/blue_print/integration</a>.</p>
 
 <h2>
 <a name="contributing" class="anchor" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h2>
