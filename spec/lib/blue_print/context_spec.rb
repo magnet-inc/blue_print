@@ -138,8 +138,6 @@ describe BluePrint::Context do
 
     before do
       context.cast(klass, as: role)
-      context.instance_variable_set(:@acted, false)
-      context.action!
     end
 
     it 'be act role' do

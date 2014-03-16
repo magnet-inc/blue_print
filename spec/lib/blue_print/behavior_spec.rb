@@ -1,10 +1,6 @@
 require 'spec_helper'
 
-module TestContext
-  def self.active?
-    true
-  end
-
+class TestContext < BluePrint::Context
   module TestBehavior
     extend BluePrint::Behavior
 
@@ -59,6 +55,8 @@ describe BluePrint::Behavior do
     end
   end
   let(:target) { target_class.new }
+
+  before { TestContext.activate! }
 
   shared_examples 'as behavior' do
     describe '#context_name' do

@@ -67,6 +67,8 @@ module BluePrint::Behavior
     punctuation = Regexp.last_match ? Regexp.last_match[1] : ''
 
     define_safe_method(aliased_target, punctuation, method_name)
+
+    context.reaction!
     @ignore_added_hook = false
   end
 end

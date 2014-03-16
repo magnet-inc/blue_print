@@ -29,8 +29,6 @@ class BluePrint::Context
   def self.active?
     return BluePrint.env[context_name] if BluePrint.env.key?(context_name)
 
-    action!
-
     BluePrint.env[context_name] =
       !!active_ifs.inject(active_ifs.first.try(:active?)) do |memo, active_if|
         memo && active_if.active?
@@ -57,6 +55,8 @@ class BluePrint::Context
     as = [as] unless as.kind_of?(Array)
     as.map! { |role| role.is_a?(Module) ? role : role.to_s.safe_constantize }
     casting[actor] = casting[actor] | as
+
+    reaction!
   end
 
   def self.action!
@@ -69,5 +69,10 @@ class BluePrint::Context
     end
 
     @acted = true
+  end
+
+  def self.reaction!
+    @acted = false
+    action!
   end
 end
