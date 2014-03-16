@@ -52,8 +52,10 @@ module BluePrint::Behavior
 
     module_eval <<-EOC
       def #{method_name}(*args)
-        within_context_of(#{context}, proc { super(*args) }) do
+        if #{context}.active?
           #{target}_with_#{behavior_name}#{punctuation}(*args)
+        else
+          super(*args)
         end
       end
     EOC

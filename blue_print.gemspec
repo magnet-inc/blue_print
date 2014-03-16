@@ -30,6 +30,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'coveralls'
   spec.add_development_dependency 'draper'
   spec.add_development_dependency 'grape'
+  spec.add_development_dependency 'ruby-progressbar'
 
   spec.add_dependency 'activesupport'
   spec.add_dependency 'hashie'
