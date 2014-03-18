@@ -25,6 +25,10 @@ module BluePrint::Integration::ActionController
   end
 end
 
+::ActionController::Base::MODULES.push(
+  BluePrint::Integration::ActionController
+)
+
 ::ActionController::Base.send(
   :include,
   BluePrint::Integration::ActionController
