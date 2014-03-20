@@ -28,7 +28,7 @@ describe Rspec::BluePrintGenerator do
   end
 
   context 'with Staff user:staff:customer' do
-    let(:arguments) { %w(Staff user:staff:customer) }
+    let(:arguments) { %w(Staff user:staff:customer_user) }
 
     specify 'be generated' do
       expect(destination_root).to(have_structure do
@@ -37,8 +37,8 @@ describe Rspec::BluePrintGenerator do
             contains 'StaffContext::Staff'
           end
 
-          file 'customer_spec.rb' do
-            contains 'StaffContext::Customer'
+          file 'customer_user_spec.rb' do
+            contains 'StaffContext::CustomerUser'
           end
         end
       end)

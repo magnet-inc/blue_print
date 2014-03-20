@@ -56,13 +56,13 @@ describe Rails::Generators::BluePrintGenerator do
   end
 
   context 'with Staff user:staff:customer' do
-    let(:arguments) { %w(Staff user:staff:customer) }
+    let(:arguments) { %w(Staff user:staff:customer_user) }
 
     specify 'be generated' do
       expect(destination_root).to(have_structure do
         directory 'app/blue_prints' do
           file 'staff_context.rb' do
-            contains 'cast ::User, as: [Staff, Customer]'
+            contains 'cast ::User, as: [Staff, CustomerUser]'
           end
 
           directory 'staff_context' do
@@ -70,7 +70,7 @@ describe Rails::Generators::BluePrintGenerator do
               contains 'StaffContext::Staff'
             end
 
-            file 'customer.rb' do
+            file 'customer_user.rb' do
               contains 'StaffContext::Customer'
             end
           end
