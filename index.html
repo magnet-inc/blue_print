@@ -31,7 +31,8 @@
           <p><a href="http://badge.fury.io/rb/blue_print"><img src="https://badge.fury.io/rb/blue_print.png" alt="Gem Version"></a>
 <a href="https://travis-ci.org/magnet-inc/blue_print"><img src="https://travis-ci.org/magnet-inc/blue_print.png?branch=master" alt="Build Status"></a>
 <a href="https://coveralls.io/r/magnet-inc/blue_print"><img src="https://coveralls.io/repos/magnet-inc/blue_print/badge.png" alt="Coverage Status"></a>
-<a href="https://codeclimate.com/github/magnet-inc/blue_print"><img src="https://codeclimate.com/github/magnet-inc/blue_print.png" alt="Code Climate"></a></p>
+<a href="https://codeclimate.com/github/magnet-inc/blue_print"><img src="https://codeclimate.com/github/magnet-inc/blue_print.png" alt="Code Climate"></a>
+<a href="https://gemnasium.com/magnet-inc/blue_print"><img src="https://gemnasium.com/magnet-inc/blue_print.svg" alt="Dependency Status"></a></p>
 
 <p>The behavior switching framework. inspired by <a href="http://en.wikipedia.org/wiki/Data,_context_and_interaction">DCI</a>.</p>
 
@@ -168,10 +169,10 @@
 <span class="k">end</span>
 
 <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span> <span class="s2">"Magnet"</span><span class="p">)</span>
+<span class="no">StaffContext</span><span class="o">.</span><span class="n">deactivate!</span>
 <span class="n">user</span><span class="o">.</span><span class="n">user_name</span> <span class="c1"># =&gt; "Magnet san"</span>
-<span class="n">within_context_of</span><span class="p">(</span><span class="no">StaffContext</span><span class="p">)</span> <span class="k">do</span>
-  <span class="n">user</span><span class="o">.</span><span class="n">user_name</span> <span class="c1"># =&gt; "staff"</span>
-<span class="k">end</span>
+<span class="no">StaffContext</span><span class="o">.</span><span class="n">activate!</span>
+<span class="n">user</span><span class="o">.</span><span class="n">user_name</span> <span class="c1"># =&gt; "staff"</span>
 </pre></div>
 
 <h4>
@@ -195,16 +196,16 @@
 <span class="k">end</span>
 
 <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">staff</span><span class="p">:</span> <span class="kp">false</span><span class="p">)</span>
+<span class="no">StaffContext</span><span class="o">.</span><span class="n">deactivate!</span>
 <span class="no">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="o">==</span> <span class="n">user</span> <span class="c1"># =&gt; true</span>
-<span class="n">within_context_of</span><span class="p">(</span><span class="no">StaffContext</span><span class="p">)</span> <span class="k">do</span>
-  <span class="no">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="c1"># =&gt; raise ActiveRecord::NotFound</span>
-<span class="k">end</span>
+<span class="no">StaffContext</span><span class="o">.</span><span class="n">activate!</span>
+<span class="no">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="c1"># =&gt; raise ActiveRecord::NotFound</span>
 </pre></div>
 
 <h3>
 <a name="helper" class="anchor" href="#helper"><span class="octicon octicon-link"></span></a>Helper</h3>
 
-<p><code>BluePrint::Helper</code> provides <code>#within_context_of</code> method.</p>
+<p><code>BluePrint::Helper</code> provides <code>#within_context_of</code> and <code>#without_context_of</code>.</p>
 
 <p>This module includes automatically to some classes. see <a href="https://github.com/magnet-inc/blue_print/tree/master/lib/blue_print/integration">lib/blue_print/integration</a>.</p>
 
