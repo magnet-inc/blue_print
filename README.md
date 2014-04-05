@@ -163,7 +163,7 @@ User.find(user.id) # => raise ActiveRecord::NotFound
 
 ### Helper
 
-`BluePrint::Helper` provides `#within_context_of` method.
+`BluePrint::Helper` provides `#within_context_of` and `#without_context_of`.
 
 This module includes automatically to some classes. see [lib/blue_print/integration](https://github.com/magnet-inc/blue_print/tree/master/lib/blue_print/integration).
 
