@@ -128,10 +128,10 @@ class User < ActiveRecord::Base
 end
 
 user = User.new(name: "Magnet")
+StaffContext.deactivate!
 user.user_name # => "Magnet san"
-within_context_of(StaffContext) do
-  user.user_name # => "staff"
-end
+StaffContext.activate!
+user.user_name # => "staff"
 ```
 
 #### Class Methods
@@ -155,10 +155,10 @@ class User < ActiveRecord::Base
 end
 
 user = User.create(staff: false)
+StaffContext.deactivate!
 User.find(user.id) == user # => true
-within_context_of(StaffContext) do
-  User.find(user.id) # => raise ActiveRecord::NotFound
-end
+StaffContext.activate!
+User.find(user.id) # => raise ActiveRecord::NotFound
 ```
 
 ### Helper
