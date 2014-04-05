@@ -4,6 +4,7 @@
 [![Build Status](https://travis-ci.org/magnet-inc/blue_print.png?branch=master)](https://travis-ci.org/magnet-inc/blue_print)
 [![Coverage Status](https://coveralls.io/repos/magnet-inc/blue_print/badge.png)](https://coveralls.io/r/magnet-inc/blue_print)
 [![Code Climate](https://codeclimate.com/github/magnet-inc/blue_print.png)](https://codeclimate.com/github/magnet-inc/blue_print)
+[![Dependency Status](https://gemnasium.com/magnet-inc/blue_print.svg)](https://gemnasium.com/magnet-inc/blue_print)
 
 The behavior switching framework. inspired by [DCI](http://en.wikipedia.org/wiki/Data,_context_and_interaction).
 
