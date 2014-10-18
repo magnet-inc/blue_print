@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ApplicationApi do
+describe ApplicationApi, type: :request do
   describe 'GET /api/version' do
     it 'returns blue print version' do
       get '/api/version'

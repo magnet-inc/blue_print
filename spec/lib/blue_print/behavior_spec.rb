@@ -82,7 +82,7 @@ describe BluePrint::Behavior do
       specify { expect(test_target.echo('hi')).to eq('hi with behavior') }
 
       context 'when deactive context' do
-        before { TestContext.stub(active?: false) }
+        before { allow(TestContext).to receive(:active?).and_return(false) }
 
         it { should_not be_valid }
         specify { expect { target.invalid }.to raise_error }

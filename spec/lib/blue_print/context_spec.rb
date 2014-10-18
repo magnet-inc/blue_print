@@ -37,7 +37,7 @@ describe BluePrint::Context do
 
     subject(:active_ifs) { context.active_ifs }
 
-    it { should have(2).active_ifs }
+    it { expect(active_ifs).to have_at_most(2).active_ifs }
   end
 
   describe '#context_name' do
@@ -57,7 +57,7 @@ describe BluePrint::Context do
         context.active_if(always_active, always_active)
       end
 
-      it { should be_true }
+      it { expect(subject).to be_truthy }
     end
 
     context 'with always deactives' do
@@ -65,7 +65,7 @@ describe BluePrint::Context do
         context.active_if(always_deactive, always_deactive)
       end
 
-      it { should be_false }
+      it { expect(subject).to be_falsy }
     end
 
     context 'with both' do
@@ -73,7 +73,7 @@ describe BluePrint::Context do
         context.active_if(always_active, always_deactive)
       end
 
-      it { should be_false }
+      it { expect(subject).to be_falsy }
     end
 
     context 'only always active' do
@@ -81,11 +81,11 @@ describe BluePrint::Context do
         context.active_if(always_active)
       end
 
-      it { should be_true }
+      it { expect(subject).to be_truthy }
     end
 
     context 'with empty' do
-      it { should be_false }
+      it { expect(subject).to be_falsy }
     end
   end
 
@@ -93,9 +93,9 @@ describe BluePrint::Context do
     subject(:deactive) { context.deactive? }
 
     it 'be negative active' do
-      context.stub(active?: false)
+      allow(context).to receive(:active?).and_return(false)
 
-      expect(deactive).to be_true
+      expect(deactive).to be_truthy
     end
   end
 
@@ -127,7 +127,7 @@ describe BluePrint::Context do
     end
 
     it 'be set casting' do
-      expect(context.casting[klass]).to have(1).role
+      expect(context.casting[klass]).to have_at_most(1).role
       expect(context.casting[klass]).to include(role)
     end
   end

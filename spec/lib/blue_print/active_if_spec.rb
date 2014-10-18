@@ -30,13 +30,13 @@ describe BluePrint::ActiveIf do
       BluePrint.env = BluePrint::Environment.new(self)
 
       calling = double
-      calling.should_receive(:message).once.and_return(true)
+      expect(calling).to receive(:message).once.and_return(true)
       active_if = described_class.new do |env|
         calling.message
       end
 
-      expect(active_if.active?).to be_true
-      expect(active_if.active?).to be_true
+      expect(active_if.active?).to be_truthy
+      expect(active_if.active?).to be_truthy
     end
   end
 
@@ -48,7 +48,7 @@ describe BluePrint::ActiveIf do
         true
       end
 
-      expect(active_if.deactive?).to be_false
+      expect(active_if.deactive?).to be_falsy
     end
   end
 end

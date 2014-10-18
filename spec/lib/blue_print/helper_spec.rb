@@ -8,7 +8,7 @@ describe BluePrint::Helper do
       let(:context) { double(active?: true) }
 
       it 'runs block' do
-        helper.should_receive(:message).once
+        expect(helper).to receive(:message).once
         helper.within_context_of(context) do |env|
           expect(env).to eq(BluePrint.env)
           helper.message
@@ -20,15 +20,15 @@ describe BluePrint::Helper do
       let(:context) { double(active?: false) }
 
       it 'not runs block' do
-        helper.should_not_receive(:message)
+        expect(helper).to_not receive(:message)
         helper.within_context_of(context) do
           helper.message
         end
       end
 
       it 'runs fallback' do
-        helper.should_receive(:fallback)
-        helper.should_not_receive(:message)
+        expect(helper).to receive(:fallback)
+        expect(helper).to_not receive(:message)
         helper.within_context_of(context, proc { helper.fallback }) do
           helper.message
         end
@@ -41,7 +41,7 @@ describe BluePrint::Helper do
       let(:context) { double(active?: false) }
 
       it 'runs block' do
-        helper.should_receive(:message).once
+        expect(helper).to receive(:message).once
         helper.without_context_of(context) do |env|
           expect(env).to eq(BluePrint.env)
           helper.message
@@ -53,15 +53,15 @@ describe BluePrint::Helper do
       let(:context) { double(active?: true) }
 
       it 'not runs block' do
-        helper.should_not_receive(:message)
+        expect(helper).to_not receive(:message)
         helper.without_context_of(context) do
           helper.message
         end
       end
 
       it 'runs fallback' do
-        helper.should_receive(:fallback)
-        helper.should_not_receive(:message)
+        expect(helper).to receive(:fallback)
+        expect(helper).to_not receive(:message)
         helper.without_context_of(context, proc { helper.fallback }) do
           helper.message
         end

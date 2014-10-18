@@ -7,7 +7,7 @@ describe BluePrint do
     it 'be inherited by parent thread' do
       BluePrint.env = env
 
-      env.should_receive(:message).twice
+      expect(env).to receive(:message).twice
 
       BluePrint.env.message
       Thread.new { BluePrint.env.message }.join
